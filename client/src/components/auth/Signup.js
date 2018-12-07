@@ -7,7 +7,8 @@ export default class Signup extends Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      photo: ''
     }
 
     this.authService = new AuthService();
@@ -16,16 +17,20 @@ export default class Signup extends Component {
   handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const {username, password} = this.state;
+    const {username, password, photo} = this.state;
 
-    this.authService.signup({username, password})
+    this.authService.signup({username, password, photo})
     .then(user => this.props.getUser(user));
   }
 
   handleChange = (e) => {
     const {name, value} = e.target;
 
-    this.setState({[name]: value});
+    if(name == "photo") {
+      this.setState({...this.state, photo: e.target.files[0]})
+    } else {
+      this.setState({...this.state, [name]: value});
+    }
   }
 
   render() {
@@ -38,6 +43,9 @@ export default class Signup extends Component {
 
           <label>Password</label>
           <input type="password" name="password" onChange={e => this.handleChange(e)} />
+
+          <label>Photo</label>
+          <input type="file" name="photo" onChange={e => this.handleChange(e)} />
 
           <input type="submit" value="Signup"/>
         </form>

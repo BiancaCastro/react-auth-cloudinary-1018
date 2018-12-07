@@ -10,7 +10,14 @@ class AuthService {
 
   signup = (user) => {
     // axios.post("http://localhost:5000/api/auth/signup", {user}, {withCredentials: true})
-    return this.service.post('/signup', user)
+    const formData = new FormData();
+    Object.keys(user).forEach(key => formData.append(key, user[key]));
+
+    return this.service.post('/signup', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+    })
     .then(response => response.data)
   }
 
