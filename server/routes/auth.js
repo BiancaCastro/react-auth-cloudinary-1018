@@ -22,8 +22,8 @@ authRoutes.post("/login", function(req, res, next) {
 
 
 authRoutes.post("/signup", (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
+
   
   if (username === "" || password === "") {
     res.status(500).json({ message: "Indicate username and password" });
