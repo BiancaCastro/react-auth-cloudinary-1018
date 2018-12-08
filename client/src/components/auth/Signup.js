@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from './AuthService';
+import {Redirect} from "react-router-dom";
 
 export default class Signup extends Component {
   constructor() {
@@ -7,7 +8,8 @@ export default class Signup extends Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      redirect: false
     }
 
     this.authService = new AuthService();
@@ -19,7 +21,10 @@ export default class Signup extends Component {
     const {username, password} = this.state;
 
     this.authService.signup({username, password})
-    .then(user => this.props.getUser(user));
+    .then(user => {
+      this.props.getUser(user)
+      this.setState({username: '', password: '', redirect: true})
+    });
   }
 
   handleChange = (e) => {
@@ -29,6 +34,10 @@ export default class Signup extends Component {
   }
 
   render() {
+    if(this.state && this.state.redirect) {
+      return <Redirect to="/" />
+    }
+
     return (
       <div>
         <h2>Signup</h2>
